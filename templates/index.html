@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<title>Book Ticket — Mobile UI</title>
+
+<!-- Poppins font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --yellow1:#ffcf5c;
+    --yellow2:#ffb800;
+    --teal:#0d8b8f;
+    --muted:#f3f6f8;
+    --card:#ffffff;
+    --shadow: 0 10px 30px rgba(10,10,10,0.08);
+    --radius:22px;
+  }
+  /* Reset */
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color: transparent;}
+  html,body{height:100%;}
+  body{
+    font-family:"Poppins",sans-serif;
+    background: linear-gradient(180deg,#ffffff 0%, #fbfbfd 40%);
+    color:#222;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:18px 0 100px; /* bottom space for navbar */
+  }
+
+  /* Phone frame container */
+  .phone {
+    width: 375px;              /* typical phone width for design */
+    max-width: 96vw;
+    background: transparent;
+  }
+
+  /* Card area */
+  .card {
+    width:100%;
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    margin: 0 auto;
+  }
+
+  /* Top hero with train image */
+  .hero {
+    position:relative;
+    height:210px;
+    background: linear-gradient(180deg, rgba(255,248,228,0.9), rgba(255,245,220,0.9));
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    padding: 18px;
+  }
+  .hero .train-wrap{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:flex-end;
+    transform: translateY(5px);
+  }
+  .hero img.train {
+    width: 260px;
+    height: auto;
+    object-fit:contain;
+    filter: drop-shadow(0 12px 18px rgba(0,0,0,0.12));
+    border-radius: 12px;
+  }
+  .hero .title {
+    position:absolute;
+    left:18px;
+    top:20px;
+    font-size:28px;
+    font-weight:700;
+    color:#111;
+  }
+
+  /* progress dots area */
+  .progress {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    justify-content:center;
+    margin-top:12px;
+  }
+  .dot {
+    width:10px; height:10px; border-radius:50%;
+    background:#dbe7e7;
+  }
+  .dot.active { background:var(--teal); box-shadow:0 3px 6px rgba(13,139,143,0.18); }
+
+  /* inner content body */
+  .body {
+    padding:18px;
+  }
+
+  /* input style */
+  .input {
+    background:var(--muted);
+    border-radius:14px;
+    padding:12px 14px;
+    margin-bottom:12px;
+    border:1px solid rgba(0,0,0,0.04);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .input input, .input select {
+    border:0; outline:none; background:transparent; width:100%; font-size:15px; color:#222;
+  }
+  .input .icon {
+    width:20px; opacity:0.8;
+  }
+
+  /* buttons */
+  .btn {
+    background: linear-gradient(180deg,var(--yellow2),#ffcc4a);
+    border-radius:12px;
+    padding:12px 18px;
+    font-weight:700;
+    font-size:16px;
+    text-align:center;
+    color:#111;
+    box-shadow: 0 6px 18px rgba(250,160,20,0.12);
+    border: none;
+    width:100%;
+    cursor:pointer;
+  }
+  .btn.ghost {
+    background:transparent;
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:none;
+  }
+
+  /* passenger controls */
+  .pass-row { display:flex; justify-content:space-between; gap:10px; margin-bottom:12px; }
+  .counter {
+    display:flex; align-items:center; gap:10px;
+    background:var(--muted); border-radius:12px; padding:8px 10px;
+    width:140px; justify-content:space-between;
+  }
+  .counter button { background:var(--teal); color:white; border-radius:8px; border:none; padding:4px 8px; cursor:pointer; font-weight:700; }
+
+  /* radio / class chips */
+  .chips { display:flex; gap:10px; flex-wrap:wrap; margin:8px 0 14px;}
+  .chip { padding:8px 12px; border-radius:10px; background:#fff; border:1px solid rgba(0,0,0,0.05); cursor:pointer; font-weight:600; }
+  .chip.active { background:var(--teal); color:#fff; border-color:transparent; box-shadow:0 6px 18px rgba(13,139,143,0.12); }
+
+  /* route list */
+  .route-list { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+  .route-card {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#ffffff;
+    border-radius:12px;
+    padding:12px;
+    border-left:8px solid var(--teal);
+    box-shadow: 0 6px 14px rgba(9,30,41,0.04);
+  }
+  .route-left { font-weight:700; color:#0b3b3d; }
+  .route-meta { font-size:13px; color:#666; margin-top:6px; }
+  .route-action { background:linear-gradient(180deg,#12a9b0,#0d8b8f); color:#fff; padding:8px 12px; border-radius:8px; cursor:pointer; }
+
+  /* page containers (for transitions) */
+  .page { display:none; padding:12px 12px 22px; }
+  .page.active { display:block; animation:fadeUp .35s ease; }
+  @keyframes fadeUp { from {opacity:0; transform:translateY(6px);} to {opacity:1; transform:none;} }
+
+  /* bottom navbar (mobile) */
+  .bottom-nav {
+    width:100%;
+    max-width:420px;
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:12px;
+    background: linear-gradient(90deg,#ffeb99,#ffd84d);
+    height:68px;
+    border-radius:34px;
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+    padding:0 14px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.12);
+    z-index:999;
+  }
+  .nav-item { text-align:center; font-size:12px; color:#056a6b; width:60px; }
+  .nav-item img { width:22px; height:22px; display:block; margin:0 auto 4px; filter:contrast(1.05); }
+  .nav-center {
+    width:64px; height:64px; border-radius:50%;
+    background:#0b98a0; display:flex; align-items:center; justify-content:center;
+    transform:translateY(-22px);
+    box-shadow:0 8px 20px rgba(11,152,160,0.24);
+    border:6px solid #fff;
+  }
+  .nav-center img { width:28px; height:28px; filter:invert(1); }
+
+  /* small footer spacing */
+  .spacer { height:88px; }
+
+  /* small helpers */
+  .muted { color:#666; font-size:13px; }
+  .center { text-align:center; }
+  .mb8 { margin-bottom:8px; }
+  .mb16 { margin-bottom:16px; }
+
+  @media (max-width:420px){
+    .phone { width: 92vw; }
+    .hero { height:200px; }
+    .hero img.train { width:220px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="card">
+    <!-- HERO -->
+    <div class="hero">
+      <div class="train-wrap">
+        <!-- Use your local train image here -->
+        <img class="train" src="static/train.png" alt="train image">
+      </div>
+    </div>
+
+    <!-- PROGRESS DOTS -->
+    <div class="progress center" style="padding:12px 0 6px;">
+      <div id="dot1" class="dot active"></div>
+      <div id="dot2" class="dot"></div>
+      <div id="dot3" class="dot"></div>
+    </div>
+
+    <!-- PAGE 1: Booking -->
+    <div id="page-1" class="page active">
+      <div class="body">
+        <div class="mb8 muted center">Booking Details</div>
+
+        <div class="input">
+          <img class="icon" src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="from">
+          <select id="from1">
+            <option value="">From (select)</option>
+            <option>Chennai</option>
+            <option>Coimbatore</option>
+            <option>Madurai</option>
+            <option>Tiruchirappalli</option>
+            <option>Salem</option>
+            <option>Vellore</option>
+            <option>Thoothukudi</option>
+            <option>Tirunelveli</option>
+            <option>Thanjavur</option>
+            <option>Nagercoil</option>
+            <option>Dindigul</option>
+            <option>Tiruppur</option>
+            <option>Karur</option>
+            <option>Namakkal</option>
+            <option>Villupuram</option>
+            <option>Kanchipuram</option>
+            <option>Krishnagiri</option>
+            <option>Tiruvannamalai</option>
+            <option>Ramanathapuram</option>
+            <option>Perambalur</option>
+            <option>Nilgiris</option>
+            <option>Tenkasi</option>
+            <option>Chengalpattu</option>
+            <option>Pudukkottai</option>
+            <option>Sivagangai</option>
+            <option>Karur</option>
+          </select>
+        </div>
+
+        <div class="input">
+          <img class="icon" src="https://cdn-icons-png.flaticon.com/512/32/32195.png" alt="to">
+          <select id="to1">
+            <option value="">To (select)</option>
+            <option>Chennai</option>
+            <option>Coimbatore</option>
+            <option>Madurai</option>
+            <option>Tiruchirappalli</option>
+            <option>Salem</option>
+            <option>Vellore</option>
+            <option>Thoothukudi</option>
+            <option>Tirunelveli</option>
+            <option>Thanjavur</option>
+            <option>Nagercoil</option>
+            <option>Dindigul</option>
+            <option>Tiruppur</option>
+            <option>Karur</option>
+            <option>Namakkal</option>
+            <option>Villupuram</option>
+            <option>Kanchipuram</option>
+            <option>Krishnagiri</option>
+            <option>Tiruvannamalai</option>
+            <option>Ramanathapuram</option>
+            <option>Perambalur</option>
+            <option>Nilgiris</option>
+            <option>Tenkasi</option>
+            <option>Chengalpattu</option>
+            <option>Pudukkottai</option>
+            <option>Sivagangai</option>
+          </select>
+        </div>
+
+        <div class="input">
+          <img class="icon" src="https://cdn-icons-png.flaticon.com/512/2921/2921222.png" alt="cal">
+          <input id="date1" type="date" />
+        </div>
+
+        <div class="mb16">
+          <button class="btn" onclick="goToPassenger()">Search Tickets</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: Passenger -->
+    <div id="page-2" class="page">
+      <div class="body">
+        <div class="mb8 muted center">Passenger Details</div>
+
+        <div class="mb8">
+          <label class="muted mb8">Adults (16+)</label>
+          <div class="counter">
+            <button onclick="decrement('adult')">-</button>
+            <div id="adultCount" style="font-weight:700">1</div>
+            <button onclick="increment('adult')">+</button>
+          </div>
+        </div>
+
+        <div class="mb8">
+          <label class="muted mb8">Children (3–15)</label>
+          <div class="counter">
+            <button onclick="decrement('child')">-</button>
+            <div id="childCount" style="font-weight:700">0</div>
+            <button onclick="increment('child')">+</button>
+          </div>
+        </div>
+
+        <div class="mb8">
+          <label class="muted">Journey Type</label>
+          <div class="chips" id="journeyChips">
+            <div class="chip active" data-value="single" onclick="selectChip(this,'journey')">Single Journey</div>
+            <div class="chip" data-value="return" onclick="selectChip(this,'journey')">Return Journey</div>
+          </div>
+        </div>
+
+        <div class="mb8">
+          <label class="muted">Class Type</label>
+          <div class="chips" id="classChips">
+            <div class="chip active" data-value="business" onclick="selectChip(this,'class')">Business Class</div>
+            <div class="chip" data-value="economy" onclick="selectChip(this,'class')">Economy Class</div>
+          </div>
+        </div>
+
+        <div class="btn-row" style="display:flex; gap:12px;">
+          <button class="btn ghost" onclick="backToBooking()">Back</button>
+          <button class="btn" onclick="goToRoutes()">Continue</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: Routes -->
+    <div id="page-3" class="page">
+      <div class="body">
+        <div class="mb8 muted center">Select Route</div>
+
+        <div class="route-list">
+          <!-- Example route cards (repeatable) -->
+          <div class="route-card">
+            <div>
+              <div class="route-left">KHI → HYD <span style="font-weight:400; color:#ffb800; font-size:12px; margin-left:8px;">Business</span></div>
+              <div class="route-meta">Departure 5:00 PM · Arrival 7:20 PM · Duration 2h 20m</div>
+            </div>
+            <div>
+              <div class="route-action" onclick="bookRoute('KHI','HYD','5:00 PM')">Book</div>
+            </div>
+          </div>
+
+          <div class="route-card">
+            <div>
+              <div class="route-left">KHI → HYD <span style="font-weight:400; color:#0d8b8f; font-size:12px; margin-left:8px;">Economy</span></div>
+              <div class="route-meta">Departure 7:00 PM · Arrival 9:20 PM · Duration 2h 20m</div>
+            </div>
+            <div>
+              <div class="route-action" onclick="bookRoute('KHI','HYD','7:00 PM')">Book</div>
+            </div>
+          </div>
+
+          <div class="route-card">
+            <div>
+              <div class="route-left">KHI → HYD <span style="font-weight:400; color:#ffb800; font-size:12px; margin-left:8px;">Business</span></div>
+              <div class="route-meta">Departure 9:00 PM · Arrival 11:20 PM · Duration 2h 20m</div>
+            </div>
+            <div>
+              <div class="route-action" onclick="bookRoute('KHI','HYD','9:00 PM')">Book</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="mb16 center muted" style="margin-top:14px;">Tap a route to book — no payment (demo)</div>
+      </div>
+    </div>
+
+  </div> <!-- End card -->
+
+  <div class="spacer"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav" aria-hidden="false">
+  <div class="nav-item">
+    <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="home"><div>Home</div>
+  </div>
+  <div class="nav-item">
+    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828859.png" alt="trips"><div>Recent</div>
+  </div>
+
+  <div class="nav-center" title="Book">
+    <img src="https://cdn-icons-png.flaticon.com/512/68/68922.png" alt="ticket">
+  </div>
+
+  <div class="nav-item">
+    <img src="https://cdn-icons-png.flaticon.com/512/891/891462.png" alt="wallet"><div>Wallet</div>
+  </div>
+  <div class="nav-item">
+    <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" alt="account"><div>Account</div>
+  </div>
+</div>
+
+<script>
+  // --- state ---
+  let adult = 1, child = 0;
+  let selectedJourney = 'single';
+  let selectedClass = 'business';
+
+  // helper to show active dot
+  function setDot(n) {
+    document.getElementById('dot1').classList.toggle('active', n===1);
+    document.getElementById('dot2').classList.toggle('active', n===2);
+    document.getElementById('dot3').classList.toggle('active', n===3);
+  }
+
+  // page navigation
+  function goToPassenger(){
+    const from = document.getElementById('from1').value;
+    const to = document.getElementById('to1').value;
+    const date = document.getElementById('date1').value;
+    if(!from || !to || !date){ alert('Please select From, To and Date'); return; }
+    document.getElementById('page-1').classList.remove('active');
+    document.getElementById('page-2').classList.add('active');
+    setDot(2);
+  }
+  function backToBooking(){
+    document.getElementById('page-2').classList.remove('active');
+    document.getElementById('page-1').classList.add('active');
+    setDot(1);
+  }
+  function goToRoutes(){
+    // basic validations not required—passenger counts default
+    document.getElementById('page-2').classList.remove('active');
+    document.getElementById('page-3').classList.add('active');
+    setDot(3);
+  }
+
+  // counters
+  function increment(type){
+    if(type==='adult'){ adult = Math.min(6, adult+1); document.getElementById('adultCount').innerText = adult; }
+    if(type==='child'){ child = Math.min(6, child+1); document.getElementById('childCount').innerText = child; }
+  }
+  function decrement(type){
+    if(type==='adult'){ adult = Math.max(1, adult-1); document.getElementById('adultCount').innerText = adult; }
+    if(type==='child'){ child = Math.max(0, child-1); document.getElementById('childCount').innerText = child; }
+  }
+
+  // chips select
+  function selectChip(el, group) {
+    const parent = el.parentElement;
+    Array.from(parent.children).forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    if(group==='journey') selectedJourney = el.dataset.value;
+    if(group==='class') selectedClass = el.dataset.value;
+  }
+
+  // booking flow
+  function bookRoute(from, to, depart){
+    const payload = {
+      from: document.getElementById('from1').value || from,
+      to: document.getElementById('to1').value || to,
+      date: document.getElementById('date1').value || '',
+      adult: adult,
+      child: child,
+      journey: selectedJourney,
+      class: selectedClass,
+      depart: depart
+    };
+
+    // send to Flask backend
+    fetch('/book', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data && (data.status==='success' || data.message)){
+        // show success overlay modal (simple)
+        showSuccess(data.message || 'Ticket Booked Successfully!');
+      } else {
+        alert('Booking failed — server returned error');
+      }
+    })
+    .catch(err=>{
+      console.error(err);
+      alert('Server error — check backend');
+    });
+  }
+
+  // show success screen (simple replacement)
+  function showSuccess(msg){
+    const card = document.querySelector('.card');
+    card.innerHTML = `
+      <div style="padding:30px; text-align:center;">
+        <img src="static/train.png" style="width:120px; filter: drop-shadow(0 10px 18px rgba(0,0,0,0.12)); border-radius:10px;" alt="train">
+        <h2 style="margin-top:18px; color: #0d8b8f;">🎉 ${msg}</h2>
+        <p style="color:#666; margin-top:8px;">Your tickets have been recorded (demo).</p>
+        <button class="btn" style="margin-top:18px;" onclick="window.location.reload()">Book Another</button>
+      </div>
+    `;
+  }
+
+  // initialize (bind initial values)
+  document.addEventListener('DOMContentLoaded', ()=>{
+    document.getElementById('adultCount').innerText = adult;
+    document.getElementById('childCount').innerText = child;
+    setDot(1);
+  });
+</script>
+
+</body>
+</html>
