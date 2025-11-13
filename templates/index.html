@@ -4,8 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 <title>Book Ticket — Mobile UI</title>
-
-<!-- Poppins font -->
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -18,7 +17,7 @@
     --shadow: 0 10px 30px rgba(10,10,10,0.08);
     --radius:22px;
   }
-  /* Reset */
+
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color: transparent;}
   html,body{height:100%;}
   body{
@@ -32,15 +31,13 @@
     justify-content:center;
     padding:18px 0 100px; /* bottom space for navbar */
   }
-
-  /* Phone frame container */
+
   .phone {
     width: 375px;              /* typical phone width for design */
     max-width: 96vw;
     background: transparent;
   }
-
-  /* Card area */
+
   .card {
     width:100%;
     background:var(--card);
@@ -49,8 +46,7 @@
     overflow:hidden;
     margin: 0 auto;
   }
-
-  /* Top hero with train image */
+
   .hero {
     position:relative;
     height:210px;
@@ -82,8 +78,7 @@
     font-weight:700;
     color:#111;
   }
-
-  /* progress dots area */
+
   .progress {
     display:flex;
     align-items:center;
@@ -96,13 +91,11 @@
     background:#dbe7e7;
   }
   .dot.active { background:var(--teal); box-shadow:0 3px 6px rgba(13,139,143,0.18); }
-
-  /* inner content body */
+
   .body {
     padding:18px;
   }
-
-  /* input style */
+
   .input {
     background:var(--muted);
     border-radius:14px;
@@ -119,8 +112,7 @@
   .input .icon {
     width:20px; opacity:0.8;
   }
-
-  /* buttons */
+
   .btn {
     background: linear-gradient(180deg,var(--yellow2),#ffcc4a);
     border-radius:12px;
@@ -139,8 +131,7 @@
     border:1px solid rgba(0,0,0,0.06);
     box-shadow:none;
   }
-
-  /* passenger controls */
+
   .pass-row { display:flex; justify-content:space-between; gap:10px; margin-bottom:12px; }
   .counter {
     display:flex; align-items:center; gap:10px;
@@ -148,13 +139,11 @@
     width:140px; justify-content:space-between;
   }
   .counter button { background:var(--teal); color:white; border-radius:8px; border:none; padding:4px 8px; cursor:pointer; font-weight:700; }
-
-  /* radio / class chips */
+
   .chips { display:flex; gap:10px; flex-wrap:wrap; margin:8px 0 14px;}
   .chip { padding:8px 12px; border-radius:10px; background:#fff; border:1px solid rgba(0,0,0,0.05); cursor:pointer; font-weight:600; }
   .chip.active { background:var(--teal); color:#fff; border-color:transparent; box-shadow:0 6px 18px rgba(13,139,143,0.12); }
-
-  /* route list */
+
   .route-list { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
   .route-card {
     display:flex;
@@ -169,13 +158,11 @@
   .route-left { font-weight:700; color:#0b3b3d; }
   .route-meta { font-size:13px; color:#666; margin-top:6px; }
   .route-action { background:linear-gradient(180deg,#12a9b0,#0d8b8f); color:#fff; padding:8px 12px; border-radius:8px; cursor:pointer; }
-
-  /* page containers (for transitions) */
+
   .page { display:none; padding:12px 12px 22px; }
   .page.active { display:block; animation:fadeUp .35s ease; }
   @keyframes fadeUp { from {opacity:0; transform:translateY(6px);} to {opacity:1; transform:none;} }
-
-  /* bottom navbar (mobile) */
+
   .bottom-nav {
     width:100%;
     max-width:420px;
@@ -203,11 +190,9 @@
     border:6px solid #fff;
   }
   .nav-center img { width:28px; height:28px; filter:invert(1); }
-
-  /* small footer spacing */
+
   .spacer { height:88px; }
-
-  /* small helpers */
+
   .muted { color:#666; font-size:13px; }
   .center { text-align:center; }
   .mb8 { margin-bottom:8px; }
@@ -223,23 +208,19 @@
 <body>
 
 <div class="phone">
-  <div class="card">
-    <!-- HERO -->
+  <div class="card">
     <div class="hero">
-      <div class="train-wrap">
-        <!-- Use your local train image here -->
+      <div class="train-wrap">
         <img class="train" src="static/train.png" alt="train image">
       </div>
     </div>
-
-    <!-- PROGRESS DOTS -->
+
     <div class="progress center" style="padding:12px 0 6px;">
       <div id="dot1" class="dot active"></div>
       <div id="dot2" class="dot"></div>
       <div id="dot3" class="dot"></div>
     </div>
-
-    <!-- PAGE 1: Booking -->
+
     <div id="page-1" class="page active">
       <div class="body">
         <div class="mb8 muted center">Booking Details</div>
@@ -319,8 +300,7 @@
         </div>
       </div>
     </div>
-
-    <!-- PAGE 2: Passenger -->
+
     <div id="page-2" class="page">
       <div class="body">
         <div class="mb8 muted center">Passenger Details</div>
@@ -365,14 +345,12 @@
         </div>
       </div>
     </div>
-
-    <!-- PAGE 3: Routes -->
+
     <div id="page-3" class="page">
       <div class="body">
         <div class="mb8 muted center">Select Route</div>
 
-        <div class="route-list">
-          <!-- Example route cards (repeatable) -->
+        <div class="route-list">
           <div class="route-card">
             <div>
               <div class="route-left">KHI → HYD <span style="font-weight:400; color:#ffb800; font-size:12px; margin-left:8px;">Business</span></div>
@@ -409,12 +387,11 @@
       </div>
     </div>
 
-  </div> <!-- End card -->
+  </div>
 
   <div class="spacer"></div>
 </div>
-
-<!-- BOTTOM NAV -->
+
 <div class="bottom-nav" aria-hidden="false">
   <div class="nav-item">
     <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="home"><div>Home</div>
@@ -435,20 +412,17 @@
   </div>
 </div>
 
-<script>
-  // --- state ---
+<script>
   let adult = 1, child = 0;
   let selectedJourney = 'single';
   let selectedClass = 'business';
-
-  // helper to show active dot
+
   function setDot(n) {
     document.getElementById('dot1').classList.toggle('active', n===1);
     document.getElementById('dot2').classList.toggle('active', n===2);
     document.getElementById('dot3').classList.toggle('active', n===3);
   }
-
-  // page navigation
+
   function goToPassenger(){
     const from = document.getElementById('from1').value;
     const to = document.getElementById('to1').value;
@@ -469,8 +443,7 @@
     document.getElementById('page-3').classList.add('active');
     setDot(3);
   }
-
-  // counters
+
   function increment(type){
     if(type==='adult'){ adult = Math.min(6, adult+1); document.getElementById('adultCount').innerText = adult; }
     if(type==='child'){ child = Math.min(6, child+1); document.getElementById('childCount').innerText = child; }
@@ -479,8 +452,7 @@
     if(type==='adult'){ adult = Math.max(1, adult-1); document.getElementById('adultCount').innerText = adult; }
     if(type==='child'){ child = Math.max(0, child-1); document.getElementById('childCount').innerText = child; }
   }
-
-  // chips select
+
   function selectChip(el, group) {
     const parent = el.parentElement;
     Array.from(parent.children).forEach(c => c.classList.remove('active'));
@@ -488,8 +460,7 @@
     if(group==='journey') selectedJourney = el.dataset.value;
     if(group==='class') selectedClass = el.dataset.value;
   }
-
-  // booking flow
+
   function bookRoute(from, to, depart){
     const payload = {
       from: document.getElementById('from1').value || from,
@@ -501,8 +472,7 @@
       class: selectedClass,
       depart: depart
     };
-
-    // send to Flask backend
+
     fetch('/book', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
@@ -510,8 +480,7 @@
     })
     .then(res => res.json())
     .then(data => {
-      if(data && (data.status==='success' || data.message)){
-        // show success overlay modal (simple)
+      if(data && (data.status==='success' || data.message)){
         showSuccess(data.message || 'Ticket Booked Successfully!');
       } else {
         alert('Booking failed — server returned error');
@@ -522,8 +491,7 @@
       alert('Server error — check backend');
     });
   }
-
-  // show success screen (simple replacement)
+
   function showSuccess(msg){
     const card = document.querySelector('.card');
     card.innerHTML = `
@@ -535,8 +503,7 @@
       </div>
     `;
   }
-
-  // initialize (bind initial values)
+
   document.addEventListener('DOMContentLoaded', ()=>{
     document.getElementById('adultCount').innerText = adult;
     document.getElementById('childCount').innerText = child;
